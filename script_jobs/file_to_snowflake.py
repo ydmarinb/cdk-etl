@@ -87,3 +87,5 @@ success, nchunks, nrows, _ = write_pandas(conn, df, output_table_name)
 conn.close()
 
 print('Finished')
+
+
