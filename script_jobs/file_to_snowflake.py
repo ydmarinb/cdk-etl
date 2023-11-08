@@ -8,6 +8,17 @@ from pydantic import BaseModel
 from snowflake.connector.pandas_tools import write_pandas
 
 
+### ----------------------------------------------------
+input_bucket = 'etl-glue-snowflake-bf-jota'
+input_file = 'data_source/data.csv'
+input_path = f"s3://{input_bucket}/{input_file}"
+output_table_name = 'CUSTOMERS'
+secret_name = "secret_snowflake_pwd_cdk"
+secret_key = "snowflake_pwd"
+region_name = "us-east-2"
+### ----------------------------------------------------
+
+
 class Customers(BaseModel):
     CustomerID: int
     FullName: str
@@ -42,19 +53,9 @@ def get_secret(secret_name, region_name):
     
 
 
-### ----------------------------------------------------
-input_bucket = 'etl-glue-snowflake-blank'
-input_file = 'data_source/data.csv'
-input_path = f"s3://{input_bucket}/{input_file}"
-output_table_name = 'CUSTOMERS'
-secret_name = "secret_snowflake_pwd"
-region_name = "us-east-2"
-### ----------------------------------------------------
-
-
 # snowflake_pwd = os.getenv('snowflake_pwd')
 secret = get_secret(secret_name, region_name)
-snowflake_pwd = secret['snowflake_pwd']
+snowflake_pwd = secret[secret_key]
 
 conn_info = {
     'account': 'PKTRUBN-PK64038',
